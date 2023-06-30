@@ -1,1 +1,1 @@
-Learn **Next.js 13** for pet-project
+Learn **Next.js 13** on the example of a pet project

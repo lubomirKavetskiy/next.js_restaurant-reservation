@@ -10,7 +10,6 @@ import ReservationCard from './components/ReservationCard';
 
 export const metadata: Metadata = {
   title: 'Some dynamic temp title',
-  favicon: './favicon.ico',
 };
 
 export default function RestaurantDetails() {
