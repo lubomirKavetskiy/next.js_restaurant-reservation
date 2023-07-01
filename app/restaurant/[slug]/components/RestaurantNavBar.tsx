@@ -1,12 +1,18 @@
 import Link from 'next/link';
 
-export default function RestaurantNavBar() {
+interface IProps {
+  slug: string;
+}
+
+export default function RestaurantNavBar({ slug }: IProps) {
+  const href = `/restaurant/${slug}`;
+
   return (
     <nav className="flex text-reg border-b pb-2">
-      <Link href="/restaurant/temp" className="mr-7">
+      <Link href={href} className="mr-7">
         Overview
       </Link>
-      <Link href="/restaurant/temp/menu" className="mr-7">
+      <Link href={`${href}/menu`} className="mr-7">
         Menu
       </Link>
     </nav>
