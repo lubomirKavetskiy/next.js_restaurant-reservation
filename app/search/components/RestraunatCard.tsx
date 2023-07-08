@@ -22,8 +22,8 @@ export default function SearchRestraunatCard({
         <div className="mb-9">
           <div className="font-light flex text-reg">
             <Price price={restaurant.price} />
-            <p className="mr-4 capitalize">{restaurant.cuisine.name}</p>
-            <p className="mr-4 capitalize">{restaurant.location.name}</p>
+            <p className="mr-4 capitalize">{restaurant.cuisine?.name}</p>
+            <p className="mr-4 capitalize">{restaurant.location?.name}</p>
           </div>
         </div>
         <div className="text-red-600">
