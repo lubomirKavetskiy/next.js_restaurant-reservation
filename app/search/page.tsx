@@ -1,10 +1,10 @@
 import { Metadata } from 'next';
 
-import { Cuisine, PRICE, Location } from '@prisma/client';
+import { Cuisine, PRICE, Location, Review } from '@prisma/client';
 import { prisma } from '@/db';
 
 import Header from './components/Header';
-import RestraunatCard from './components/RestraunatCard';
+import SearchRestraunatCard from './components/RestraunatCard';
 import SearchSideBar from './components/SearchSideBar';
 
 export const metadata: Metadata = {
@@ -19,6 +19,7 @@ export interface IRestaurant {
   cuisine: Cuisine;
   location: Location;
   slug: string;
+  reviews: Review[];
 }
 
 export interface ISearchParams {
@@ -63,6 +64,7 @@ const fetchRestaurantsByCity = ({
     cuisine: true,
     location: true,
     slug: true,
+    reviews: true,
   };
 
   return prisma.restaurant.findMany({
@@ -99,7 +101,10 @@ export default async function Search({
         <div className="w-5/6">
           {restaurantsByLocation?.length ? (
             restaurantsByLocation.map((restaurant) => (
-              <RestraunatCard key={restaurant.id} restaurant={restaurant} />
+              <SearchRestraunatCard
+                key={restaurant.id}
+                restaurant={restaurant}
+              />
             ))
           ) : (
             <h2>Sorry, we found no restaurants in this location</h2>

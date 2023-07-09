@@ -1,5 +1,8 @@
 import { Metadata } from 'next';
 
+import { prisma } from '@/db';
+import { Review } from '@prisma/client';
+
 import RestaurantNavBar from './components/RestaurantNavBar';
 import Title from './components/Title';
 import Rating from './components/Rating';
@@ -7,7 +10,6 @@ import Description from './components/Description';
 import Images from './components/Images';
 import Reviews from './components/Reviews';
 import ReservationCard from './components/ReservationCard';
-import { prisma } from '@/db';
 
 export const metadata: Metadata = {
   title: 'Some dynamic temp title',
@@ -20,6 +22,7 @@ interface Restaurant {
   images: string[];
   main_image: string;
   slug: string;
+  reviews: Review[];
 }
 
 const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
@@ -34,6 +37,7 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
       images: true,
       main_image: true,
       slug: true,
+      reviews: true,
     },
   });
 
@@ -54,10 +58,10 @@ export default async function RestaurantDetails({
       <div className="bg-white w-[70%] rounded p-3 shadow">
         <RestaurantNavBar slug={restaurant.slug} />
         <Title name={restaurant.name} />
-        <Rating />
+        <Rating reviews={restaurant.reviews} />
         <Description description={restaurant.description} />
         <Images images={restaurant.images} />
-        <Reviews />
+        <Reviews reviews={restaurant.reviews} />
       </div>
       <ReservationCard />
     </>
