@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 
 import { prisma } from '@/db';
 import { Review } from '@prisma/client';
@@ -41,7 +42,7 @@ const fetchRestaurantBySlug = async (slug: string): Promise<Restaurant> => {
     },
   });
 
-  if (!restaurant) throw new Error('Restaurant not found');
+  if (!restaurant) notFound();
 
   return restaurant;
 };
