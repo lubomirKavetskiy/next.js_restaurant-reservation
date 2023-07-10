@@ -12,7 +12,6 @@ interface IProps {
 export default function RestaurantCard({ restaurant }: IProps) {
   return (
     <div className="w-64 h-72 m-3 rounded overflow-hidden border cursor-pointer">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <Link href={`/restaurant/${restaurant.slug}`}>
         <img src={restaurant.main_image} alt="" className="w-full h-36" />
 
