@@ -53,9 +53,10 @@ export default function AuthModalInputs({
       {isSignIn ? null : (
         <div className="my-3 flex justify-between text-small">
           <input
-            type="number"
+            type="tel"
             className="border rounded p-2 py-3 w-[49%]"
             placeholder="Phone Number"
+            name="phone"
             value={inputs.phone}
             onChange={onInputChange}
           />
