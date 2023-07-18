@@ -1,9 +1,17 @@
+import { useCallback, useContext } from 'react';
 import axios from 'axios';
-import { useCallback } from 'react';
+
+import { AuthenticationContext } from '@/app/context/AuthContext';
 
 export default function useAuth() {
+  const { loading, error, data, setAuthState } = useContext(
+    AuthenticationContext
+  );
+
   const signIn = useCallback(
     async ({ email, password }: { email: string; password: string }) => {
+      setAuthState({ loading: true, error: null, data: null });
+
       try {
         const response = await axios.post(
           'http://localhost:3000/api/auth/signin',
@@ -13,12 +21,16 @@ export default function useAuth() {
           }
         );
 
-        console.log({ response });
-      } catch (error) {
-        console.log(error);
+        setAuthState({ loading: false, error: null, data: response.data });
+      } catch (error: any) {
+        setAuthState({
+          loading: false,
+          error: error.response.data.errorMessage,
+          data: null,
+        });
       }
     },
-    []
+    [setAuthState]
   );
 
   const signUp = useCallback(async () => {
