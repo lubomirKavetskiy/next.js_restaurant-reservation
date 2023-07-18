@@ -1,11 +1,13 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import useAuth from '@/hooks/useAuth';
 
 import AuthModalInputs from './AuthModalInputs';
+
+import { AuthenticationContext } from '../context/AuthContext';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -26,6 +28,7 @@ export default function AuthModal({ isSignIn }: IProps) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const [inputs, setInputs] = useState({
     first_name: '',
     last_name: '',
@@ -36,6 +39,8 @@ export default function AuthModal({ isSignIn }: IProps) {
   });
 
   const [isDisabled, setDisabled] = useState(true);
+
+  const { error } = useContext(AuthenticationContext);
 
   const { signIn } = useAuth();
 
@@ -66,7 +71,6 @@ export default function AuthModal({ isSignIn }: IProps) {
 
   const handleSubmit = async () => {
     if (isSignIn) {
-
       await signIn({ email: inputs.email, password: inputs.password });
     } else {
       // await signUp(inputs);
