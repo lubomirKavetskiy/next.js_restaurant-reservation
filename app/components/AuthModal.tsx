@@ -3,6 +3,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import useAuth from '@/hooks/useAuth';
 
 import AuthModalInputs from './AuthModalInputs';
 
@@ -36,6 +37,8 @@ export default function AuthModal({ isSignIn }: IProps) {
 
   const [isDisabled, setDisabled] = useState(true);
 
+  const { signIn } = useAuth();
+
   useEffect(() => {
     if (isSignIn) {
       if (inputs.email && inputs.password) return setDisabled(false);
@@ -58,8 +61,16 @@ export default function AuthModal({ isSignIn }: IProps) {
     isSignIn ? signInContent : signUpContent;
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.name, e.target.value);
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async () => {
+    if (isSignIn) {
+
+      await signIn({ email: inputs.email, password: inputs.password });
+    } else {
+      // await signUp(inputs);
+    }
   };
 
   return (
@@ -100,6 +111,7 @@ export default function AuthModal({ isSignIn }: IProps) {
               />
               <button
                 disabled={isDisabled}
+                onClick={handleSubmit}
                 className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
               >
                 {renderContent('Sign In', 'Create Account')}

@@ -31,7 +31,7 @@ export default async function handler(
     });
 
     if (errors.length > 0) {
-      res.status(400).json({ message: errors[0] });
+      return res.status(400).json({ errorMessage: errors[0] });
     }
 
     const userWithEmail = await prisma.user.findUnique({
@@ -41,13 +41,17 @@ export default async function handler(
     });
 
     if (!userWithEmail) {
-      res.status(401).json({ message: 'Email or password is not valid' });
+      return res
+        .status(401)
+        .json({ errorMessage: 'Email or password is not valid' });
     }
 
     const isMatch = await bcrypt.compare(password, userWithEmail!.password);
 
     if (!isMatch) {
-      res.status(401).json({ message: 'Email or password is not valid' });
+      return res
+        .status(401)
+        .json({ errorMessage: 'Email or password is not valid' });
     }
 
     const alg = 'HS256';
@@ -58,8 +62,8 @@ export default async function handler(
       .setExpirationTime('24h')
       .sign(secret);
 
-    res.status(200).json({ name: token });
+    return res.status(200).json({ token });
   }
 
-  return res.status(404).json({ message: 'Unknown endpoint' });
+  return res.status(404).json({ errorMessage: 'Unknown endpoint' });
 }

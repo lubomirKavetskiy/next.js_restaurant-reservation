@@ -47,7 +47,7 @@ export default async function handler(
     });
 
     if (errors.length > 0) {
-      res.status(400).json({ message: errors[0] });
+      return res.status(400).json({ errorMessage: errors[0] });
     }
 
     const userWithEmail = await prisma.user.findUnique({
@@ -57,7 +57,9 @@ export default async function handler(
     });
 
     if (userWithEmail) {
-      res.status(400).json({ message: 'User with this email already exists' });
+      return res
+        .status(400)
+        .json({ errorMessage: 'User with this email already exists' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -81,8 +83,8 @@ export default async function handler(
       .setExpirationTime('24h')
       .sign(secret);
 
-    res.status(200).json({ name: token });
+    return res.status(200).json({ name: token });
   }
 
-  return res.status(404).json({ message: 'Unknown endpoint' });
+  return res.status(404).json({ errorMessage: 'Unknown endpoint' });
 }
