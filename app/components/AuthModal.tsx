@@ -31,8 +31,8 @@ export default function AuthModal({ isSignIn }: IProps) {
   const handleClose = () => setOpen(false);
 
   const [inputs, setInputs] = useState({
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     city: '',
     email: '',
     password: '',
@@ -43,15 +43,15 @@ export default function AuthModal({ isSignIn }: IProps) {
 
   const { loading, error, data } = useContext(AuthenticationContext);
 
-  const { signIn } = useAuth();
+  const { signIn, signUp } = useAuth();
 
   useEffect(() => {
     if (isSignIn) {
       if (inputs.email && inputs.password) return setDisabled(false);
     } else {
       if (
-        inputs.first_name &&
-        inputs.last_name &&
+        inputs.firstName &&
+        inputs.lastName &&
         inputs.city &&
         inputs.email &&
         inputs.password &&
@@ -77,7 +77,7 @@ export default function AuthModal({ isSignIn }: IProps) {
         handleClose
       );
     } else {
-      // await signUp(inputs);
+      await signUp({ ...inputs }, handleClose);
     }
   };
 
@@ -121,7 +121,6 @@ export default function AuthModal({ isSignIn }: IProps) {
                     'Log Into Your Account',
                     'Create Your OpenTable Account'
                   )}
-                  {data?.city}
                 </h2>
                 <AuthModalInputs
                   inputs={inputs}

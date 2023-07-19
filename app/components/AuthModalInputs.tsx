@@ -2,8 +2,8 @@ import { ChangeEvent } from 'react';
 
 interface IProps {
   inputs: {
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     city: string;
     email: string;
     password: string;
@@ -26,16 +26,16 @@ export default function AuthModalInputs({
             type="text"
             className="border rounded p-2 py-3 w-[49%]"
             placeholder="First Name"
-            name="first_name"
-            value={inputs.first_name}
+            name="firstName"
+            value={inputs.firstName}
             onChange={onInputChange}
           />
           <input
             type="text"
             className="border rounded p-2 py-3 w-[49%]"
             placeholder="Last Name"
-            name="last_name"
-            value={inputs.last_name}
+            name="lastName"
+            value={inputs.lastName}
             onChange={onInputChange}
           />
         </div>
