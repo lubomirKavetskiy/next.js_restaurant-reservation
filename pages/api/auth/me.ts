@@ -32,7 +32,18 @@ export default async function handler(
       },
     });
 
-    return res.status(200).json({ me: user });
+    if (!user) {
+      return res.status(401).json({ errorMessage: 'User not found' });
+    } else {
+      return res.status(200).json({
+        id: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        email: user.email,
+        phone: user.phone,
+        city: user.city,
+      });
+    }
   }
 
   return res.status(404).json({ message: 'Unknown endpoint' });

@@ -80,7 +80,7 @@ export default function AuthModal({ isSignIn }: IProps) {
       await signUp({ ...inputs }, handleClose);
     }
   };
-
+  console.log({ data: data });
   return (
     <div>
       <button
@@ -90,7 +90,7 @@ export default function AuthModal({ isSignIn }: IProps) {
           'border p-1 px-4 rounded'
         )}
       >
-        {renderContent('Sign In', 'Sign Up')}
+        {renderContent('Sign in', 'Sign up')}
       </button>
       <Modal
         open={open}
@@ -112,7 +112,7 @@ export default function AuthModal({ isSignIn }: IProps) {
               ) : null}
               <div className="uppercase font-bold text-center pb-2 border-b mb-2">
                 <p className="text-sm">
-                  {renderContent('Sign In', 'Create Account')}
+                  {renderContent('Sign in', 'Create Account')}
                 </p>
               </div>
               <div className="m-auto">
@@ -121,6 +121,7 @@ export default function AuthModal({ isSignIn }: IProps) {
                     'Log Into Your Account',
                     'Create Your OpenTable Account'
                   )}
+                  {data?.firstName}
                 </h2>
                 <AuthModalInputs
                   inputs={inputs}
@@ -132,7 +133,7 @@ export default function AuthModal({ isSignIn }: IProps) {
                   onClick={handleSubmit}
                   className="uppercase bg-red-600 w-full text-white p-3 rounded text-sm mb-5 disabled:bg-gray-400"
                 >
-                  {renderContent('Sign In', 'Create Account')}
+                  {renderContent('Sign in', 'Create Account')}
                 </button>
               </div>
             </div>
