@@ -72,7 +72,10 @@ export default function AuthModal({ isSignIn }: IProps) {
 
   const handleSubmit = async () => {
     if (isSignIn) {
-      await signIn({ email: inputs.email, password: inputs.password });
+      await signIn(
+        { email: inputs.email, password: inputs.password },
+        handleClose
+      );
     } else {
       // await signUp(inputs);
     }
@@ -118,6 +121,7 @@ export default function AuthModal({ isSignIn }: IProps) {
                     'Log Into Your Account',
                     'Create Your OpenTable Account'
                   )}
+                  {data?.city}
                 </h2>
                 <AuthModalInputs
                   inputs={inputs}

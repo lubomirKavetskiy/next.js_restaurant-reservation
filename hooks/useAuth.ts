@@ -9,7 +9,10 @@ export default function useAuth() {
   );
 
   const signIn = useCallback(
-    async ({ email, password }: { email: string; password: string }) => {
+    async (
+      { email, password }: { email: string; password: string },
+      cb?: () => void
+    ) => {
       setAuthState({ loading: true, error: null, data: null });
 
       try {
@@ -22,6 +25,7 @@ export default function useAuth() {
         );
 
         setAuthState({ loading: false, error: null, data: response.data });
+        cb!();
       } catch (error: any) {
         setAuthState({
           loading: false,
