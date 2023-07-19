@@ -1,5 +1,6 @@
 import { Inter } from 'next/font/google';
 import { Metadata } from 'next';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import NavBar from './components/NavBar';
 import './globals.css';

@@ -1,6 +1,18 @@
 'use client';
 
+import { partySise } from '@/data';
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+
 export default function RestaurantReservationCard() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) return setSelectedDate(date);
+
+    return setSelectedDate(null);
+  };
+
   return (
     <div className="w-[27%] relative text-reg">
       <div className="fixed w-[15%] bg-white rounded p-3 shadow">
@@ -10,14 +22,23 @@ export default function RestaurantReservationCard() {
         <div className="my-3 flex flex-col">
           <label htmlFor="">Party size</label>
           <select name="" className="py-3 border-b font-light" id="">
-            <option value="">1 person</option>
-            <option value="">2 people</option>
+            {partySise.map(({ value, label }) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
           </select>
         </div>
         <div className="flex justify-between">
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Date</label>
-            <input type="text" className="py-3 border-b font-light w-28" />
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              className="py-3 border-b font-light w-28 text-reg"
+              dateFormat="MMMM d"
+              wrapperClassName="w-[48%]"
+            />
           </div>
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Time</label>
