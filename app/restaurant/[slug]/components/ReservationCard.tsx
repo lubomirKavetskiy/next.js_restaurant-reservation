@@ -1,10 +1,16 @@
 'use client';
 
-import { partySise } from '@/data';
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 
-export default function RestaurantReservationCard() {
+import { partySise, times } from '@/data';
+
+interface IProps {
+  openTime: string;
+  closeTime: string;
+}
+
+export default function ReservationCard({ openTime, closeTime }: IProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
 
   const handleDateChange = (date: Date | null) => {
@@ -12,6 +18,10 @@ export default function RestaurantReservationCard() {
 
     return setSelectedDate(null);
   };
+
+  const filteredTimeByRestaurantOpenWindow = times.filter(
+    ({ time }) => time >= openTime && time < closeTime
+  );
 
   return (
     <div className="w-[27%] relative text-reg">
@@ -35,7 +45,7 @@ export default function RestaurantReservationCard() {
             <DatePicker
               selected={selectedDate}
               onChange={handleDateChange}
-              className="py-3 border-b font-light w-28 text-reg"
+              className="py-3 border-b font-light w-24 text-reg"
               dateFormat="MMMM d"
               wrapperClassName="w-[48%]"
             />
@@ -43,8 +53,13 @@ export default function RestaurantReservationCard() {
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Time</label>
             <select name="" id="" className="py-3 border-b font-light">
-              <option value="">7:30 AM</option>
-              <option value="">9:30 AM</option>
+              {filteredTimeByRestaurantOpenWindow.map(
+                ({ time, displayTime }) => (
+                  <option key={time} value={time}>
+                    {displayTime}
+                  </option>
+                )
+              )}
             </select>
           </div>
         </div>
