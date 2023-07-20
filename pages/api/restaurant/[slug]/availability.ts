@@ -38,7 +38,21 @@ export default async function handler(
     },
   });
 
-  return res.status(200).json({ searchTimes, bookings });
+  const bookingTablesObj: any = bookings.reduce(
+    (acc, curr) =>
+      [
+        ...acc,
+        {
+          [curr.booking_time.toISOString()]: curr.tables.reduce(
+            (obj, { table_id }) => ({ ...obj, [table_id]: true }),
+            {}
+          ),
+        },
+      ] as any,
+    []
+  );
+
+  return res.status(200).json({ searchTimes, bookingTablesObj });
 }
 
 //http://localhost:3000/api/restaurant/vivaanId/availability?day=2021-08-01&time=03:00:000&partySize=2
