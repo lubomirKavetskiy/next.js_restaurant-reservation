@@ -38,19 +38,18 @@ export default async function handler(
     },
   });
 
-  const bookingTablesObj: any = bookings.reduce(
-    (acc, curr) =>
-      [
-        ...acc,
-        {
-          [curr.booking_time.toISOString()]: curr.tables.reduce(
-            (obj, { table_id }) => ({ ...obj, [table_id]: true }),
-            {}
-          ),
-        },
-      ] as any,
-    []
-  );
+  let bookingTablesObj: { [key: string]: { [key: number]: boolean } } = {};
+
+  bookings.forEach((booking) => {
+    bookingTablesObj[booking.booking_time.toISOString()] =
+      booking.tables.reduce(
+        (acc, curr) => ({
+          ...acc,
+          [curr.table_id]: true,
+        }),
+        {}
+      );
+  });
 
   const restaurant = await prisma.restaurant.findUnique({
     where: {
@@ -65,9 +64,27 @@ export default async function handler(
     return res.status(400).json({ message: 'Invalid restaurant provided' });
   }
 
-  console.log(restaurant);
+  const searchTimesWithTables = searchTimes.map((searchTime) => {
+    return {
+      date: new Date(`${day} ${searchTime}`),
+      time: searchTime,
+      tables: restaurant.tables,
+    };
+  });
 
-  return res.status(200).json({ searchTimes, bookingTablesObj });
+  searchTimesWithTables.forEach((item) => {
+    item.tables = item.tables.filter(
+      ({ id }) => !bookingTablesObj[item.date.toISOString()]?.[id]
+    );
+  });
+
+  return res.status(200).json({
+    searchTimes,
+    bookingTablesObj,
+    bookings,
+    restaurantTables: restaurant.tables,
+    searchTimesWithTables,
+  });
 }
 
 //http://localhost:3000/api/restaurant/vivaanId/availability?day=2021-08-01&time=03:00:000&partySize=2
