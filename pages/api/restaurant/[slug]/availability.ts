@@ -78,12 +78,19 @@ export default async function handler(
     );
   });
 
+  const availabilities = searchTimesWithTables.map((item) => {
+    const sum = item.tables.reduce((acc, { seats }) => acc + seats, 0);
+
+    return { time: item.time, available: sum >= parseInt(partySize) };
+  });
+
   return res.status(200).json({
     searchTimes,
     bookingTablesObj,
     bookings,
     restaurantTables: restaurant.tables,
     searchTimesWithTables,
+    availabilities,
   });
 }
 
