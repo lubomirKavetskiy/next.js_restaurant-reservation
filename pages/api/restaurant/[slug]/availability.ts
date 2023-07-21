@@ -52,6 +52,21 @@ export default async function handler(
     []
   );
 
+  const restaurant = await prisma.restaurant.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      tables: true,
+    },
+  });
+
+  if (!restaurant) {
+    return res.status(400).json({ message: 'Invalid restaurant provided' });
+  }
+
+  console.log(restaurant);
+
   return res.status(200).json({ searchTimes, bookingTablesObj });
 }
 
