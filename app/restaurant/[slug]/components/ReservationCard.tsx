@@ -3,18 +3,37 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 
-import { partySise, times } from '@/data';
+import { partySizes, times } from '@/data';
+import useAvailability from '@/hooks/useAvailability';
 
 interface IProps {
   openTime: string;
   closeTime: string;
+  slug: string;
 }
 
-export default function ReservationCard({ openTime, closeTime }: IProps) {
+export default function ReservationCard({ openTime, closeTime, slug }: IProps) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
+  const [day, setDay] = useState(new Date().toISOString().split('T')[0]);
+  const [time, setTime] = useState(openTime);
+  const [partySize, setPartySize] = useState('2');
+  const { loading, data, error, fetchAvalability } = useAvailability();
+
+  const handleBtnClick = () => {
+    fetchAvalability({
+      slug,
+      day,
+      time,
+      partySize,
+    });
+  };
 
   const handleDateChange = (date: Date | null) => {
-    if (date) return setSelectedDate(date);
+    if (date) {
+      const day = date.toISOString().split('T')[0];
+      setDay(day);
+      return setSelectedDate(date);
+    }
 
     return setSelectedDate(null);
   };
@@ -22,6 +41,8 @@ export default function ReservationCard({ openTime, closeTime }: IProps) {
   const filteredTimeByRestaurantOpenWindow = times.filter(
     ({ time }) => time >= openTime && time < closeTime
   );
+
+  console.log({ loading, data, error });
 
   return (
     <div className="w-[27%] relative text-reg">
@@ -31,8 +52,14 @@ export default function ReservationCard({ openTime, closeTime }: IProps) {
         </div>
         <div className="my-3 flex flex-col">
           <label htmlFor="">Party size</label>
-          <select name="" className="py-3 border-b font-light" id="">
-            {partySise.map(({ value, label }) => (
+          <select
+            value={partySize}
+            onChange={(e) => setPartySize(e.target.value)}
+            name=""
+            className="py-3 border-b font-light"
+            id=""
+          >
+            {partySizes.map(({ value, label }) => (
               <option key={value} value={value}>
                 {label}
               </option>
@@ -52,7 +79,13 @@ export default function ReservationCard({ openTime, closeTime }: IProps) {
           </div>
           <div className="flex flex-col w-[48%]">
             <label htmlFor="">Time</label>
-            <select name="" id="" className="py-3 border-b font-light">
+            <select
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              name=""
+              id=""
+              className="py-3 border-b font-light"
+            >
               {filteredTimeByRestaurantOpenWindow.map(
                 ({ time, displayTime }) => (
                   <option key={time} value={time}>
@@ -64,7 +97,10 @@ export default function ReservationCard({ openTime, closeTime }: IProps) {
           </div>
         </div>
         <div className="mt-5">
-          <button className="bg-red-600 rounded w-full px-4 text-white font-bold h-16">
+          <button
+            onClick={handleBtnClick}
+            className="bg-red-600 rounded w-full px-4 text-white font-bold h-16"
+          >
             Find a Time
           </button>
         </div>

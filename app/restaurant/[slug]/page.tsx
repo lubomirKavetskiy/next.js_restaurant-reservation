@@ -68,7 +68,11 @@ export default async function RestaurantDetails({
         <Images images={restaurant.images} />
         <Reviews reviews={restaurant.reviews} />
       </div>
-      <ReservationCard openTime={restaurant.open_time} closeTime={restaurant.close_time}/>
+      <ReservationCard
+        openTime={restaurant.open_time}
+        slug={restaurant.slug}
+        closeTime={restaurant.close_time}
+      />
     </>
   );
 }
