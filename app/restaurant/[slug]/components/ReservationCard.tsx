@@ -2,11 +2,12 @@
 
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
+import Link from 'next/link';
 
 import { partySizes, times } from '@/data';
 import useAvailabilities from '@/hooks/useAvailabilities';
 import { CircularProgress } from '@mui/material';
-import Link from 'next/link';
+import { Time, convertToDisplayTime } from '@/utils/convertToDisplayTime';
 
 interface IProps {
   openTime: string;
@@ -113,7 +114,9 @@ export default function ReservationCard({ openTime, closeTime, slug }: IProps) {
                   href={`/reserve/${slug}?date=${day}T${time}&partySize=${partySize}`}
                   className="bg-red-600 cursor-pointer p-2 w-24 text-center text-white mb-3 rounded mr-3"
                 >
-                  <p className="text-sm font-bold">{time}</p>
+                  <p className="text-sm font-bold">
+                    {convertToDisplayTime(time as Time)}
+                  </p>
                 </Link>
               ) : (
                 <p
