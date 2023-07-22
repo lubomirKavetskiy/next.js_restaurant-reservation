@@ -97,14 +97,7 @@ export default async function handler(
       return timeAfterOpeningHour && timeBeforeClosingHour;
     });
 
-  return res.status(200).json({
-    searchTimes,
-    bookingTablesObj,
-    bookings,
-    restaurantTables: restaurant.tables,
-    searchTimesWithTables,
-    availabilities,
-  });
+  return res.status(200).json(availabilities);
 }
 
 //http://localhost:3000/api/restaurant/vivaanId/availability?day=2021-08-01&time=03:00:000&partySize=2

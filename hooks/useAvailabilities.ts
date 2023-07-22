@@ -3,10 +3,12 @@ import { useState } from 'react';
 
 export default function useAvailability() {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<
+    { time: string; available: boolean }[] | null
+  >(null);
   const [error, setError] = useState(null);
 
-  const fetchAvalability = async ({
+  const fetchAvalabilities = async ({
     slug,
     day,
     time,
@@ -43,6 +45,6 @@ export default function useAvailability() {
     loading,
     data,
     error,
-    fetchAvalability,
+    fetchAvalabilities,
   };
 }
