@@ -1,3 +1,4 @@
+import { prisma } from '@/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -10,6 +11,30 @@ export default async function handler(
     time: string;
     partySize: string;
   };
+
+  const restaurant = await prisma.restaurant.findUnique({
+    where: {
+      slug,
+    },
+    select: {
+      tables: true,
+      open_time: true,
+      close_time: true,
+    },
+  });
+
+  if (!restaurant) {
+    return res.status(400).json({ message: 'Restaurant not found' });
+  }
+
+  if (
+    new Date(`${day}T${time}`) < new Date(restaurant.open_time) ||
+    new Date(`${day}T${time}`) > new Date(restaurant.close_time)
+  ) {
+    return res
+      .status(400)
+      .json({ message: 'Restaurant is not open in this time' });
+  }
 
   return res.json({ slug, day, time, partySize });
 }
