@@ -57,7 +57,17 @@ export default async function handler(
     return res.status(400).json({ message: 'No availability, cannot book' });
   }
 
-  return res.json({ searchTimeWithTables });
+  const tablesCount: { 2: number[]; 4: number[] } = { 2: [], 4: [] };
+
+  searchTimeWithTables.tables.forEach(({ seats, id }) => {
+    if (seats === 2) {
+      tablesCount[2].push(id);
+    } else {
+      tablesCount[4].push(id);
+    }
+  });
+
+  return res.json({ searchTimeWithTables, tablesCount });
 }
 
 //http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2025-01-31&time=15:00:00.000Z&partySize=2
