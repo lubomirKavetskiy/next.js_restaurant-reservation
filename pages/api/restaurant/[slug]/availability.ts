@@ -64,4 +64,4 @@ export default async function handler(
   return res.status(200).json(availabilities);
 }
 
-//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2021-08-01&time=03:00:000&partySize=2
+//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/availability?day=2025-01-31&time=15:00:00.000Z&partySize=2

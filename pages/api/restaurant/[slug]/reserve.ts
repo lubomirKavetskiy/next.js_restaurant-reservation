@@ -1,4 +1,5 @@
 import { prisma } from '@/db';
+import findAvailableTables from '@/service/restuarant/findAvailableTables';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(
@@ -36,10 +37,30 @@ export default async function handler(
       .json({ message: 'Restaurant is not open in this time' });
   }
 
-  return res.json({ slug, day, time, partySize });
+  const searchTimesWithTables = await findAvailableTables({
+    time,
+    day,
+    restaurant,
+    res,
+  });
+
+  if (!searchTimesWithTables) {
+    return res.status(400).json({ message: 'Invalid data provided' });
+  }
+
+  const searchTimeWithTables = searchTimesWithTables.find(
+    ({ date }) =>
+      date.toISOString() === new Date(`${day}T${time}`).toISOString()
+  );
+
+  if (!searchTimeWithTables) {
+    return res.status(400).json({ message: 'No availability, cannot book' });
+  }
+
+  return res.json({ searchTimeWithTables });
 }
 
-//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2021-08-01&time=03:00:000&partySize=2
+//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2025-01-31&time=15:00:00.000Z&partySize=2
 
 // //only 2 best score result;
 // const items = [
