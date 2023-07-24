@@ -20,8 +20,8 @@ model Booking {
   booker_last_name  String
   booker_occasion   String?
   booker_request    String?
-  restraurant_id    Int
-  restaurant        Restaurant @relation(fields: [restraurant_id], references: [id])
+  restaurant_id    Int
+  restaurant        Restaurant @relation(fields: [restaurant_id], references: [id])
   tables            BookingsOnTable[]
   created_at        DateTime @default(now())
   updated_at        DateTime @updatedAt

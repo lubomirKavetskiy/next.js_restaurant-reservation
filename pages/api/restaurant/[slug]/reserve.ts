@@ -120,7 +120,7 @@ export default async function handler(
         booker_last_name: bookerLastName,
         booker_occasion: bookerOccasion,
         booker_request: bookerRequest,
-        restraurant_id: restaurant.id,
+        restaurant_id: restaurant?.id,
       },
     });
 
@@ -132,7 +132,7 @@ export default async function handler(
     await prisma.bookingsOnTable.createMany({
       data: bookingsOnTablesData,
     });
-
+    console.log({ booking });
     return res.json(booking);
   }
 }
