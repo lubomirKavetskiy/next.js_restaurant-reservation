@@ -28,8 +28,8 @@ export default async function handler(
   }
 
   if (
-    new Date(`${day}T${time}`) < new Date(restaurant.open_time) ||
-    new Date(`${day}T${time}`) > new Date(restaurant.close_time)
+    new Date(`${day}T${time}`) < new Date(`${day}T${restaurant.open_time}`) ||
+    new Date(`${day}T${time}`) > new Date(`${day}T${restaurant.close_time}`)
   ) {
     return res
       .status(400)
@@ -39,4 +39,40 @@ export default async function handler(
   return res.json({ slug, day, time, partySize });
 }
 
-//http://localhost:3000/api/restaurant/vivaanId/reserve?day=2021-08-01&time=03:00:000&partySize=2
+//http://localhost:3000/api/restaurant/vivaan-fine-indian-cuisine-ottawa/reserve?day=2021-08-01&time=03:00:000&partySize=2
+
+// //only 2 best score result;
+// const items = [
+//   [2, 89],
+//   [1, 97],
+//   [3, 56],
+//   [2, 58],
+//   [3, 12],
+//   [3, 95],
+//   [1, 55],
+//   [2, 44],
+// ];
+
+// // const obj = {[id]: [items]};
+// const obj = {};
+
+// for (const [key, value] of items) {
+//   if (!obj[key]) {
+//     obj[key] = [value];
+//   } else {
+//     obj[key] = [...obj[key], value];
+//   }
+// }
+
+// const result = [];
+
+// for (const key in obj) {
+//   obj[key] =
+//     obj[key]
+//       .sort()
+//       .slice(0, 3)
+//       .reduce((acc, curr) => acc + curr, 0) / 2;
+//   result.push(key, obj[key]);
+// }
+
+// console.log(result);

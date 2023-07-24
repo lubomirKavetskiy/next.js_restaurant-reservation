@@ -80,7 +80,7 @@ export default function AuthModal({ isSignIn }: IProps) {
       await signUp({ ...inputs }, handleClose);
     }
   };
-  console.log({ data: data });
+
   return (
     <div>
       <button
